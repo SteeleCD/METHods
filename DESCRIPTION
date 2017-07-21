@@ -1,0 +1,11 @@
+Package: METHods 
+Title: Various methods for analysis of methylation array data.
+Description: Pipelines, methods and functions for analysing and plotting methylation array data.
+Depends: R (>= 3.1.0), gtools, sva, GenomicRanges, minfi, conumee, doParallel, copynumber
+Suggests: limma, DNAcopy 
+Imports: sva, GenomicRanges, minfi, conumee, doParallel, copynumber
+Version: 0.2.0
+Date: 21/07/2017
+Author: Christopher Steele
+Maintainer: Christopher Steele <steelecd2110@gmail.com>
+License: GPL-3
