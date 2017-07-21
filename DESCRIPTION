@@ -4,7 +4,7 @@ Description: Pipelines, methods and functions for analysing and plotting methyla
 Depends: R (>= 3.1.0), gtools, sva, GenomicRanges, minfi, conumee, doParallel, copynumber
 Suggests: limma, DNAcopy 
 Imports: sva, GenomicRanges, minfi, conumee, doParallel, copynumber
-Version: 0.2.0
+Version: 0.1.0
 Date: 21/07/2017
 Author: Christopher Steele
 Maintainer: Christopher Steele <steelecd2110@gmail.com>
