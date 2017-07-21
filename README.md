@@ -3,14 +3,20 @@ Various functions and methods for analysis of methylation arrays
 
 Pipelines, methods and functions to help with methylation array analysis.
 
-# Minfi data preprocessing: minfiPipeline()
+# minfiPipeline()
+Minfi data preprocessing
 
-# Copy number analysis: conumeePipeline()
+# conumeePipeline()
+Copy number analysis
 
-# Partially methylated domains: definePMDs()
+# definePMDs()
+Partially methylated domains
 
-# Intermediate methylation quantification: getBumpLimsWindow()
+# getBumpLimsWindow()
+Intermediate methylation quantification
 
-# Differentially methylated region annotation: DMRinfo()
+# DMRinfo()
+Differentially methylated region annotation
 
-# Differentially methylated region plotting: plotDMR()
+# plotDMR()
+Differentially methylated region plotting
