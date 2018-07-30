@@ -6,7 +6,7 @@ GOenrichmentMethy = function(geneFile=NULL,outDir,array="EPIC")
 	{
 	library(goseq)
 	# get manifest
-	manifest = steeleLib:::getManifestOld(array)
+	manifest = getManifestOld(array)
 	# get all genes on array
 	allGenes = sapply(manifest$UCSC_RefGene_Name,FUN=function(x) unique(strsplit(x,split=";")[[1]]))
 	allGenes = table(unlist(allGenes))
@@ -39,7 +39,7 @@ GOenrichmentMethy = function(geneFile=NULL,outDir,array="EPIC")
 getGeneBackground = function(array)
 {
   # get manifest
-  manifest = steeleLib:::getManifestOld(array)
+  manifest = getManifestOld(array)
   # get all genes on array
   allGenes = sapply(manifest$UCSC_RefGene_Name,FUN=function(x) unique(strsplit(x,split=";")[[1]]))
   allGenes = table(unlist(allGenes))

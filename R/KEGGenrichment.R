@@ -8,7 +8,7 @@ enrichKEGG = function(dataDir,upFile="promUpGenes.txt",downFile="promDownGenes.t
 	library(clusterProfiler)
 	library(ReactomePA)
 	# read in manifest
-	manifest = steeleLib:::getManifestOld(array)
+	manifest = getManifestOld(array)
 	allGenes = sapply(manifest$UCSC_RefGene_Name,FUN=function(x) unique(strsplit(x,split=";")[[1]]))
 	allGenes = table(unlist(allGenes))
 	# convert all genes to entrez id
