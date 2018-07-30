@@ -42,6 +42,7 @@ DMRinfo = function(dmrFile,# DMR file from bumphunter
 		threshType = "fwer"
 		}
 	# load DMRs
+	print("load DMRs")
 	fileEnding = rev(strsplit(dmrFile,"[.]")[[1]])[1]
 	if(grepl("R",fileEnding))
 		{
@@ -53,6 +54,7 @@ DMRinfo = function(dmrFile,# DMR file from bumphunter
 	# what chromosome encoding
 	chromBool = all(grepl("chr",dmr$chr))
 	# make bed files for homer
+	print("make bed")
 	forBed = dmr
 	if(!chromBool) 
 		{
@@ -72,6 +74,7 @@ DMRinfo = function(dmrFile,# DMR file from bumphunter
 		rtracklayer::export.bed(makeGRangesFromDataFrame(forBed[indexUpBed,]),paste0(outDir,"/upSig.bed"))
 		}
 	# volcano plot
+	print("plot volcano")
 	zeroBool = dmr[,threshType]==0
   if(any(zeroBool))
   {
@@ -84,6 +87,7 @@ DMRinfo = function(dmrFile,# DMR file from bumphunter
 	plot(dmr[,"value"],-log(dmr[,threshType]),col=colours,xlab="Beta difference",ylab=paste0("-log(,",threshType,")"),pch=PCH)
 	dev.off()
 	# overlapping genes all
+	print("overlapping genes")
 	sigIndex = which(dmr[,threshType]<thresh)
 	infoAll = paste0("chr",dmr[sigIndex,"chr"],":",dmr[sigIndex,"start"],"-",dmr[sigIndex,"end"])
 	gRangesAll = as(infoAll,"GRanges")
@@ -113,7 +117,8 @@ DMRinfo = function(dmrFile,# DMR file from bumphunter
 		DMRgenesDown = preDMRinfo$genes[which(names(preDMRinfo$genes)%in%overlapDown$gene_id)]
 		write.table(unique(DMRgenesDown),file=paste0(outDir,"/downGenes.txt"),sep="\t",col.names=FALSE,row.names=FALSE,quote=FALSE)
 		}	
-	# feature DMRs e.g. promoter DMRs
+	# feature DMRs e.g. promoter DMRsa
+	print("feature DMRs")
 	index = which(dmr[,threshType]<thresh)
 	info = paste0("chr",dmr[index,"chr"],":",dmr[index,"start"],"-",dmr[index,"end"])
 	colours = colours[index]
@@ -175,6 +180,7 @@ DMRinfo = function(dmrFile,# DMR file from bumphunter
 	# GO enrichment
 	if(doGO)
 	{
+	print("GO")
 	system(paste0("mkdir ",outDir,"/GO"))
 	system(paste0("mkdir ",outDir,"/GO/up"))
 	system(paste0("mkdir ",outDir,"/GO/down"))
@@ -188,6 +194,7 @@ DMRinfo = function(dmrFile,# DMR file from bumphunter
 	# KEGG enrichment
 	if(doKEGG)
 	{
+	print("KEGG")
 	enrichKEGG(dataDir=outDir,
 	           upFile="promUpGenes.txt",
 	           downFile="promDownGenes.txt")
