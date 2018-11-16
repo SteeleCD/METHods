@@ -2,7 +2,7 @@
 # pipeline for running minfi inc. normalisation etc
 # ==========================================================================
 
-minfiPipeline = function(dataDir,outDir=getwd(),nCells=5,legendloc="topleft",plotcolours=c("green","red","black","blue","cyan"),refactor=NULL,combat=NULL,toIgnore=NULL,badSampleCutoff=10.5)
+minfiPipeline = function(dataDir,outDir=getwd(),nCells=5,legendloc="topleft",plotcolours=c("green","red","black","blue","cyan"),refactor=NULL,combat=NULL,toIgnore=NULL,badSampleCutoff=10.5,normalisation="funnorm")
 	{
 	# load in sample sheet
 	sheet = read.metharray.sheet(dataDir)
@@ -42,14 +42,37 @@ minfiPipeline = function(dataDir,outDir=getwd(),nCells=5,legendloc="topleft",plo
 	# fraction of failed positions per sample
 	colMeans(lowQual) 
 	probesToKeep = rownames(detP)[which(rowSums(detP>=qualCut)<=0)]
+	# quantile normalisation
+	if(normalisation=="quantile")
+		{
+		quantileNorm = preprocessQuantile(RGset,fixOutliers=TRUE,removeBadSamples=TRUE,badSampleCutoff=10.5,quantileNormalize=TRUE,stratified=TRUE)
+		quantileNorm = dropLociWithSnps(quantileNorm)
+		save(list="quantileNorm",file=paste0(outDir,"/quantilenorm-droppedSnps.Rdata"))
+		betas = getBeta(quantileNorm)
+		annotation = getAnnotation(quantileNorm)
+		}
 	# functional normalisation
-	funnorm = preprocessFunnorm(RGset)
-	# drop SNP probes
-	funnorm = dropLociWithSnps(funnorm)
-	save(list="funnorm",file=paste0(outDir,"/funnorm-droppedSnps.Rdata"))
-	# get betas
-	betas = getBeta(funnorm)
-	annotation = getAnnotation(funnorm)
+	if(normalisation=="funnorm")
+		{
+		funnorm = preprocessFunnorm(RGset)
+		# drop SNP probes
+		funnorm = dropLociWithSnps(funnorm)
+		save(list="funnorm",file=paste0(outDir,"/funnorm-droppedSnps.Rdata"))
+		# get betas
+		betas = getBeta(funnorm)
+		annotation = getAnnotation(funnorm)
+		}
+	# SWAN normalisation
+	if(normalisation=="SWAN")
+		{
+		SWANnorm = preprocessSWAN(RGset)
+		SWANratio <- ratioConvert(SWANnorm, what = "both", keepCN = TRUE)
+		SWANratioG = mapToGenome(SWANratio)
+		SWANnorm = dropLociWithSnps(SWANratioG)
+		save(list="SWANnorm",file=paste0(outDir,"/SWANnorm-droppedSnps.Rdata"))
+		betas = getBeta(SWANnorm)
+		annotation = getAnnotation(SWANnorm)
+		}
 	# remove sex probes
 	sexProbes = rownames(annotation)[which(annotation[,"chr"]%in%c("chrX","chrY"))]
 	betas = betas[-which(rownames(betas)%in%sexProbes),]
